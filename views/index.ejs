@@ -17,7 +17,7 @@
       <li class="main-list__item">
         <a href="boards/<%=boardItem.board_id%>" class="board">
           <p class="board__title"><%= boardItem.title %></p>
-          <p class="board__date"><%= boardItem.created_at %></p>
+          <p class="board__date"><%= new Date(boardItem.createdAt) %></p>
         </a>
       </li>
       <% }); %>

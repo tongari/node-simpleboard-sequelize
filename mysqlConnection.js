@@ -1,9 +1,7 @@
 var mysql = require('mysql');
-var Sequelize = require('sequelize').Sequelize;
+var Sequelize = require('sequelize');
 
-var sequelize = new Sequelize('bulletin_board', 'root', '', {
-  host: '127.0.0.1'
-});
+var sequelize = new Sequelize('bulletin_board', 'root', '', { host: '127.0.0.1',timezone : "+09:00" });
 
 var connection = sequelize;
 

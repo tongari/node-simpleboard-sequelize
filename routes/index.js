@@ -2,22 +2,40 @@ var express = require('express');
 var router = express.Router();
 var moment = require('moment');
 var connection = require('../mysqlConnection');
-var Boards = connection.define('boards', {});
+var Sequelize = require('sequelize');
+
+var Boards = connection.define('boards', {
+  board_id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  title: Sequelize.STRING,
+  createdAt: {
+    type: Sequelize.DATE,
+    field: 'created_at'
+  },
+  updatedAt: {
+    type: Sequelize.DATE,
+    field: 'updated_at'
+  }
+});
 
 // GET action
 router.get('/', function(req, res, next) {
 
-  connection
-    .authenticate()
-    .then(function(err) {
-      console.log(Boards.findAll());
-    })
-    .catch(function (err) {
-      console.log('Unable to connect to the database:', err);
+  connection.sync().then(function() {
+    return Boards.findAndCountAll();
+  }).then(function(result) {
+
+    res.render('index', {
+      title: 'node start',
+      boardList: result.rows
     });
 
+  });
 
-  // var query = 'SELECT *, DATE_FORMAT(created_at, \'%Y年%m月%d日 %k時%i分%s秒\') AS created_at FROM boards';
+  // var query = 'SELECT *, DATE_FORMAT(createdAt, \'%Y年%m月%d日 %k時%i分%s秒\') AS createdAt FROM boards';
   // connection.query(query, function(err, rows) {
   //   res.render('index', {
   //     title: 'node start',
